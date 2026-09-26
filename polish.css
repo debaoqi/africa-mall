@@ -5,7 +5,7 @@
  * 设计规范
  *   页面左右边距  16px
  *   间距刻度      4 / 8 / 12 / 16 / 24
- *   圆角          大卡片 16px，内层图片/小块 12px，按钮胶囊形
+ *   圆角          大卡片 8px，内层图片/小块/按钮 6px，输入框/小格子 4px（圆形头像等保持圆形）
  *   字号          辅助 12 · 正文 13–14 · 卡片标题 15–16 · 区块标题 17–18 · 大数字 28–40
  *   触控尺寸      主按钮 48px，次级按钮 34–40px
  * ===================================================================== */
@@ -17,9 +17,10 @@
     --s3: 12px;
     --s4: 16px;
     --s5: 24px;
-    --r-lg: 16px;        /* 大卡片 */
-    --r-md: 12px;        /* 内层图片 / 小块 */
-    --r-pill: 999px;     /* 胶囊按钮 */
+    --r-lg: 8px;         /* 大卡片（原 16px，统一缩小一半） */
+    --r-md: 6px;         /* 内层图片 / 小块 / 按钮（原 12px） */
+    --r-sm: 4px;         /* 最内层：输入框、小格子（原 8px） */
+    --r-pill: 6px;       /* 原胶囊按钮，统一改成与按钮相同的小圆角 */
 }
 
 /* ---------- 顶部栏 ---------- */
@@ -230,7 +231,7 @@ html body #lucky-top.lucky-top-item {
 html body .game-bar { margin: 0 0 var(--s3) !important; }
 html body .game-bar strong { font-size: 16px !important; }
 html body .game-grid { gap: 4px !important; margin-bottom: var(--s3) !important; }
-html body .game-grid .cell { border-radius: 8px !important; }
+html body .game-grid .cell { border-radius: var(--r-sm) !important; }
 html body .grid-switcher {
     gap: var(--s2) !important;
     margin: 0 0 var(--s3) !important;
@@ -267,7 +268,7 @@ html body .pts-foot .btn-grad { flex: 2 1 0 !important; min-width: 0 !important;
 html body .pts-head {
     margin: var(--s3) var(--pg) 0 !important;
     padding: var(--s4) var(--s5) !important;
-    border-radius: 20px !important;
+    border-radius: var(--r-lg) !important;
 }
 /* 吸顶时的整宽底衬：盖住两侧留边、圆角外，以及和下方游戏中心之间的缝隙（做法同首页 banner） */
 html body .pts-head {
@@ -359,11 +360,11 @@ html body .prof-head .recharge-box .rech-inp-s {
     flex: 1 1 auto !important;
     width: auto !important;
     min-width: 40px;
-    border-radius: 8px !important;
+    border-radius: var(--r-sm) !important;
 }
 html body .prof-head .recharge-box .rech-confirm {
     flex: 0 0 auto;
-    border-radius: 8px !important;
+    border-radius: var(--r-sm) !important;
     padding-left: 14px !important;
     padding-right: 14px !important;
 }
@@ -403,7 +404,7 @@ html body #page-register .register-koko-logo { height: 48px !important; width: a
 html body #page-register .register-buttons { margin-top: 0 !important; }
 html body #page-register .btn-login {
     min-height: 52px !important;
-    border-radius: 14px !important;
+    border-radius: var(--r-md) !important;
     margin-bottom: var(--s3) !important;
 }
 /* 白色按钮上的邮件 / 手机图标改成深色，原来是白色看不见 */
@@ -437,6 +438,28 @@ html body .m-box #product-info-price { color: #0E8A70 !important; }
 /* 商城搜索框：输入框较窄，提示文字放不下时用省略号收尾，不再被硬切 */
 html body .shop-search input { font-size: 14px !important; text-overflow: ellipsis; min-width: 0; }
 html body .shop-search input::placeholder { text-overflow: ellipsis; }
+
+/* ---------- 统一圆角（其余样式表里写死的圆角） ----------
+ * 大块 8px / 按钮、输入框、小块 6px / 最内层 4px；圆形头像、勾选圈、展开按钮保持圆形 */
+html body .m-box,
+html body #draw-number-display,
+html body .product-image-box--modal,
+html body #det-i-media { border-radius: var(--r-lg) !important; }
+html body .m-box input,
+html body .m-box textarea,
+html body .m-box select,
+html body .m-box .btn-big,
+html body .m-box button:not(.avatar),
+html body .pay-opt,
+html body .search-input-wrap,
+html body .search-btn,
+html body #shop-search-input,
+html body .stat,
+html body .toast,
+html body .f-btn,
+html body #game-buttons-sticky button,
+html body #game-buttons-sticky > div > div { border-radius: var(--r-md) !important; }
+html body .nav { border-radius: var(--r-lg) var(--r-lg) 0 0 !important; }
 
 /* ---------- 底部导航 ---------- */
 html body .nav { height: 60px !important; padding-bottom: env(safe-area-inset-bottom); }
