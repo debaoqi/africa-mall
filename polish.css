@@ -51,6 +51,8 @@ html body .shop-top::before {
 html body .header .logo { font-size: 22px !important; line-height: 1 !important; }
 html body .header .logo span { font-size: 22px !important; }
 html body .header .badges { gap: 6px !important; align-items: center !important; }
+/* 金额 / 积分整体左移约 60px；窄屏手机上按可用空间自动减少，保证不压到左边 logo */
+html body .header .badges { margin-right: clamp(0px, calc(100% - 262px), 60px) !important; }
 html body .header .badge {
     padding: 5px 10px !important;
     border-radius: var(--r-pill) !important;
@@ -63,7 +65,9 @@ html body .header .badge {
 /* ---------- 首页 ---------- */
 html body #page-home .hero {
     width: calc(100% - 2 * var(--pg)) !important;
-    margin: var(--s3) auto 0 !important;
+    /* 顶部间距 = 吸顶位置 70px − 顶栏 56px，banner 的自然位置正好等于吸顶位置；
+       否则会被往下推 2px，连带色块压住下方商品卡片的上边圆角 */
+    margin: 14px auto 0 !important;
     border-radius: var(--r-lg) !important;
 }
 /* 吸顶时的整宽底衬：盖住两侧留边、圆角外、顶部空隙和下方标题栏，滚上来的内容不会透出来 */
@@ -435,6 +439,8 @@ html body .m-box #det-i-cost,
 html body .m-box #conf-orig-price,
 html body .m-box #product-info-price { color: #0E8A70 !important; }
 
+/* 商城"搜索"按钮文字改细体 */
+html body .search-btn { font-weight: 400 !important; }
 /* 商城搜索框：输入框较窄，提示文字放不下时用省略号收尾，不再被硬切 */
 html body .shop-search input { font-size: 14px !important; text-overflow: ellipsis; min-width: 0; }
 html body .shop-search input::placeholder { text-overflow: ellipsis; }
@@ -460,6 +466,21 @@ html body .f-btn,
 html body #game-buttons-sticky button,
 html body #game-buttons-sticky > div > div { border-radius: var(--r-md) !important; }
 html body .nav { border-radius: var(--r-lg) var(--r-lg) 0 0 !important; }
+
+/* ---------- 起始页：只显示文字 Africa-mall ---------- */
+html body #splash-screen { background: var(--bg, #1E304C) !important; }
+html body #splash-logo.splash-wordmark {
+    margin: 0 !important;
+    font-family: Arial, "Helvetica Neue", sans-serif;
+    font-size: 40px;
+    font-weight: 800;
+    font-style: italic;
+    letter-spacing: 0.01em;
+    line-height: 1;
+    color: #F4FAFC;
+    white-space: nowrap;
+}
+html body #splash-logo.splash-wordmark span { color: var(--primary, #43E0BC); }
 
 /* ---------- 底部导航 ---------- */
 html body .nav { height: 60px !important; padding-bottom: env(safe-area-inset-bottom); }
