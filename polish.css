@@ -3,7 +3,7 @@
  * 在所有样式之后加载，只调整排版，不改颜色和功能。
  *
  * 设计规范
- *   页面左右边距  16px
+ *   页面左右边距  8px
  *   间距刻度      4 / 8 / 12 / 16 / 24
  *   圆角          大卡片 8px，内层图片/小块/按钮 6px，输入框/小格子 4px（圆形头像等保持圆形）
  *   字号          辅助 12 · 正文 13–14 · 卡片标题 15–16 · 区块标题 17–18 · 大数字 28–40
@@ -11,7 +11,7 @@
  * ===================================================================== */
 
 :root {
-    --pg: 16px;          /* 页面左右边距 */
+    --pg: 8px;           /* 页面左右边距（原 16px，缩小一半让内容更宽） */
     --s1: 4px;
     --s2: 8px;
     --s3: 12px;
@@ -303,6 +303,7 @@ html body .pts-head::after {
 }
 html body .pts-head .v-pts { font-size: 40px !important; line-height: 1.1 !important; margin: var(--s1) 0 !important; }
 html body #game-center-container {
+    border: none !important;          /* 去掉游戏中心外圈极细的绿色描边 */
     margin: 0 !important;
     padding: var(--s3) var(--pg) var(--s2) !important;
     border-radius: 0 !important;
