@@ -1,0 +1,381 @@
+/* =====================================================================
+ * polish.css —— 版面细节统一（间距 / 尺寸 / 圆角 / 字号）
+ * 在所有样式之后加载，只调整排版，不改颜色和功能。
+ *
+ * 设计规范
+ *   页面左右边距  16px
+ *   间距刻度      4 / 8 / 12 / 16 / 24
+ *   圆角          大卡片 16px，内层图片/小块 12px，按钮胶囊形
+ *   字号          辅助 12 · 正文 13–14 · 卡片标题 15–16 · 区块标题 17–18 · 大数字 28–40
+ *   触控尺寸      主按钮 48px，次级按钮 34–40px
+ * ===================================================================== */
+
+:root {
+    --pg: 16px;          /* 页面左右边距 */
+    --s1: 4px;
+    --s2: 8px;
+    --s3: 12px;
+    --s4: 16px;
+    --s5: 24px;
+    --r-lg: 16px;        /* 大卡片 */
+    --r-md: 12px;        /* 内层图片 / 小块 */
+    --r-pill: 999px;     /* 胶囊按钮 */
+}
+
+/* ---------- 顶部栏 ---------- */
+html body .header {
+    padding: 10px var(--pg) !important;
+    align-items: center !important;
+}
+html body .header .logo { font-size: 22px !important; line-height: 1 !important; }
+html body .header .logo span { font-size: 22px !important; }
+html body .header .badges { gap: 6px !important; align-items: center !important; }
+html body .header .badge {
+    padding: 5px 10px !important;
+    border-radius: var(--r-pill) !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    font-size: 12px !important;
+    line-height: 1.2 !important;
+    white-space: nowrap;
+}
+
+/* ---------- 首页 ---------- */
+html body #page-home .hero {
+    width: calc(100% - 2 * var(--pg)) !important;
+    margin: var(--s3) auto 0 !important;
+    border-radius: var(--r-lg) !important;
+}
+/* 吸顶时的整宽底衬：盖住两侧留边、圆角外、顶部空隙和下方标题栏，滚上来的内容不会透出来 */
+html body #page-home .hero::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    left: calc(-1 * var(--pg) - 1px);
+    right: calc(-1 * var(--pg) - 1px);
+    top: -16px;
+    bottom: -48px;
+    height: auto !important;
+    background: var(--bg, #1E304C);
+    pointer-events: none;
+}
+/* 底衬会盖住 banner 自身的背景，所以白底和描边改由 ::after 画在底衬上面 */
+html body #page-home .hero {
+    background: transparent !important;
+    border-width: 0 !important;
+}
+html body #page-home .hero::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    box-sizing: border-box;
+    border: 1px solid rgba(110, 150, 164, 0.3);
+    border-radius: inherit;
+    background: #F4F8FA;
+    pointer-events: none;
+}
+/* 色块吸顶位置紧接在标题栏下方：70(banner 吸顶位置) + banner 高 + 48(标题栏) */
+@media (max-width: 480px) {
+    html body #page-home .hero-orange-blocks { top: 238px !important; }
+}
+html body #page-home .hero .hero-green-bar {
+    font-size: 17px !important;
+    letter-spacing: 0.02em;
+}
+html body #page-home .hero .hero-tag {
+    top: var(--s3) !important;
+    right: var(--s3) !important;
+    padding: 4px 10px !important;
+    border-radius: var(--r-pill) !important;
+    font-size: 11px !important;
+}
+html body #page-home .hero-orange-blocks {
+    padding: 0 var(--pg) !important;
+    gap: var(--s2) !important;
+    height: auto !important;
+    margin-bottom: 0 !important;
+    padding-bottom: var(--s4) !important;   /* 用 padding 留间隙，吸顶时这段也能遮住下面的商品 */
+    box-sizing: border-box;
+}
+html body #page-home .hero-orange-block-item {
+    height: auto !important;
+    aspect-ratio: 1 / 1;
+    border-radius: var(--r-md) !important;
+}
+html body #home-prod.grid-2 {
+    padding: 0 var(--pg) 120px !important;
+    gap: var(--s3) !important;
+    margin-top: 0 !important;
+}
+html body .home-card {
+    padding: var(--s2) !important;
+    border-radius: var(--r-lg) !important;
+    gap: 0 !important;
+}
+/* 灰色图片框铺满图片 + 文字区域，两行文字叠放在灰色框上（底部），卡片总高度不变 */
+html body .home-card {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr);
+}
+html body .home-card .card-img,
+html body .home-card .card-desc { grid-row: 1; grid-column: 1; }
+html body .home-card .card-img {
+    border-radius: var(--r-md) !important;
+    height: auto !important;
+    min-height: 176px;
+    align-self: stretch;
+}
+html body .home-card .card-img .product-image-label { translate: 0 -22px; }  /* 标签避开底部文字 */
+html body .home-card .card-desc {
+    position: relative;
+    z-index: 2;
+    align-self: end;
+    padding: 18px 6px 6px !important;
+    gap: 4px !important;
+    border-radius: 0 0 var(--r-md) var(--r-md);
+    /* 放真实商品图时，底部淡淡的一层衬底保证文字看得清；灰底上看不出来 */
+    background: linear-gradient(to top, rgba(224, 224, 224, 0.92) 60%, rgba(224, 224, 224, 0)) !important;
+}
+html body .home-card .card-foot { grid-row: 2; grid-column: 1; border-top: none !important; }  /* 灰框已经分隔，不再需要分隔线 */
+html body .home-card .card-desc-text {
+    font-size: 13px !important; line-height: 1.35 !important;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;  /* 最多两行 */
+}
+html body .home-card .card-desc-rating {
+    font-size: 11.5px !important; white-space: nowrap; overflow: hidden;   /* "推荐指数 ★★★★☆ 4.2" 保持一行 */
+    display: flex; align-items: center; gap: 2px !important;
+}
+html body .home-card .card-desc-rating .item-rating-stars { font-size: 10.5px !important; letter-spacing: -0.5px; }
+html body .home-card .card-foot { padding-top: var(--s2) !important; }
+html body .home-card .foot-btns { gap: 6px !important; }
+html body .home-card .foot-btns > * {
+    min-height: 32px !important;
+    padding: 0 4px !important;
+    display: flex !important; align-items: center; justify-content: center;
+    border-radius: var(--r-pill) !important;
+    font-size: 12px !important;
+    white-space: nowrap;
+}
+
+/* ---------- 商城 ---------- */
+html body .shop-top { padding: var(--s3) var(--pg) var(--s2) !important; }
+html body .shop-search-wrapper,
+html body .cats-wrapper { padding: 0 !important; }
+html body .shop-search {
+    margin: 0 0 var(--s3) !important;
+    min-height: 48px;
+    padding: 6px 6px 6px 12px !important;
+    border-radius: var(--r-lg) !important;
+    box-sizing: border-box;
+}
+html body #shop-cats.cats { gap: var(--s2) !important; margin-top: 0 !important; padding-top: 0 !important; }
+html body .cat-btn {
+    min-height: 36px !important;
+    border-radius: var(--r-pill) !important;
+    font-size: 14px !important;
+}
+html body .cat-expand-btn {
+    width: 28px !important;
+    height: 28px !important;
+}
+/* 展开分类按钮放到分类按钮下方居中，不再压住分类按钮 */
+html body #shop-cats + .shop-slogan-container { min-height: 34px; }
+html body #shop-cats + .shop-slogan-container .cat-expand-btn { top: 4px !important; }
+html body .cat-expand-btn i { font-size: 14px !important; }
+html body #shop-list.shop-list {
+    padding: var(--s2) var(--pg) 120px !important;
+    gap: var(--s3) !important;
+}
+html body .shop-item {
+    padding: var(--s3) !important;
+    gap: var(--s3) !important;
+    border-radius: var(--r-lg) !important;
+    align-items: stretch;
+}
+html body .shop-item .shop-info { padding: 0 !important; }
+html body .shop-item .shop-img-placeholder,
+html body .shop-item .shop-img {
+    width: 108px !important;
+    height: 108px !important;
+    flex: 0 0 108px;
+    border-radius: var(--r-md) !important;
+}
+
+/* ---------- 抽奖页（AFRICA） ---------- */
+html body .lucky-area { padding: var(--s3) var(--pg) 150px !important; box-sizing: border-box; }
+html body #lucky-top.lucky-top-item {
+    margin: 0 0 var(--s4) !important;
+    border-radius: var(--r-lg) !important;
+}
+html body .game-bar { margin: 0 0 var(--s3) !important; }
+html body .game-bar strong { font-size: 16px !important; }
+html body .game-grid { gap: 4px !important; margin-bottom: var(--s3) !important; }
+html body .game-grid .cell { border-radius: 8px !important; }
+html body .grid-switcher {
+    gap: var(--s2) !important;
+    margin: 0 0 var(--s3) !important;
+}
+html body .gs-btn {
+    min-height: 40px !important;
+    border-radius: var(--r-md) !important;
+    font-size: 14px !important;
+}
+
+/* 底部固定操作栏（抽奖页 / 积分页）：留边距，按钮胶囊形 */
+html body .lucky-area .acts,
+html body .pts-foot {
+    left: 0 !important;
+    right: 0 !important;
+    padding: var(--s2) var(--pg) !important;
+    gap: var(--s3) !important;
+    box-sizing: border-box !important;
+}
+html body .lucky-area .acts .btn-big,
+html body .lucky-area .acts #btn-pay,
+html body .pts-foot .btn-big {
+    min-height: 48px !important;
+    padding: 0 var(--s4) !important;
+    border-radius: var(--r-pill) !important;
+    font-size: 16px !important;
+}
+
+/* 积分页底栏：收藏 : 兑换 = 1 : 2，按剩余空间分配（原固定百分比没算间距，会超出右边） */
+html body .pts-foot .btn-out { flex: 1 1 0 !important; min-width: 0 !important; }
+html body .pts-foot .btn-grad { flex: 2 1 0 !important; min-width: 0 !important; }
+
+/* ---------- 积分页 ---------- */
+html body .pts-head {
+    margin: var(--s3) var(--pg) 0 !important;
+    padding: var(--s4) var(--s5) !important;
+    border-radius: 20px !important;
+}
+/* 吸顶时的整宽底衬：盖住两侧留边、圆角外，以及和下方游戏中心之间的缝隙（做法同首页 banner） */
+html body .pts-head {
+    background: transparent !important;
+    border-width: 0 !important;
+}
+html body .pts-head::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    left: calc(-1 * var(--pg) - 1px);
+    right: calc(-1 * var(--pg) - 1px);
+    top: calc(-1 * var(--s3));
+    bottom: calc(-1 * var(--s3));
+    background: var(--bg, #1E304C);
+    pointer-events: none;
+}
+html body .pts-head::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    box-sizing: border-box;
+    border: 1px solid rgba(28, 28, 28, 0.12);
+    border-radius: inherit;
+    background: var(--primary, #43E0BC);
+    pointer-events: none;
+}
+html body .pts-head .v-pts { font-size: 40px !important; line-height: 1.1 !important; margin: var(--s1) 0 !important; }
+html body #game-center-container {
+    margin: 0 !important;
+    padding: var(--s3) var(--pg) var(--s2) !important;
+    border-radius: 0 !important;
+}
+html body #game-center-container > div:first-child { padding: 0 0 var(--s2) !important; }
+html body #game-buttons-sticky { padding: 0 !important; }
+html body #game-buttons-sticky > div { gap: var(--s2) !important; }
+html body #game-buttons-sticky button,
+html body #game-buttons-sticky > div > div {
+    min-height: 40px !important;
+    border-radius: var(--r-md) !important;
+}
+html body #pts-items.pts-grid {
+    padding: 0 var(--pg) !important;
+    gap: 10px !important;
+    margin: var(--s3) 0 80px !important;
+}
+html body .pt-item { border-radius: var(--r-md) !important; overflow: hidden; }
+html body .pt-item .pt-img { border-radius: 0 !important; }
+html body .pt-item .pt-info { padding: 6px var(--s2) !important; font-size: 13px !important; }
+
+/* ---------- 我的 ---------- */
+html body .prof-head { padding: var(--s4) var(--pg) var(--s3) !important; margin: 0 !important; gap: var(--s3); }
+html body .prof-head .user-info { margin: 0 !important; flex: 1 1 auto; min-width: 0; }
+html body .prof-head #u-id { white-space: nowrap !important; font-size: 12px !important; }       /* ID 保持一行 */
+html body .prof-head .avatar { width: 52px !important; height: 52px !important; flex: 0 0 52px; }
+html body .prof-head .recharge-box { flex: 0 0 auto; gap: 6px !important; }
+html body .prof-head .recharge-box .rech-inp-s { width: 60px !important; }
+html body .prof-head .recharge-box { margin-left: auto !important; padding: 8px 8px 8px 12px !important; border-radius: var(--r-pill) !important; }
+html body .prof-head .recharge-box .rech-inp-s,
+html body .prof-head .recharge-box .rech-confirm { border-radius: var(--r-pill) !important; }
+html body .profile-fixed-header .stats {
+    padding: var(--s3) var(--pg) var(--s3) !important;
+    margin: 0 !important;
+    gap: var(--s2) !important;
+}
+html body .profile-fixed-header .stat {
+    padding: 10px 6px !important;
+    border-radius: var(--r-md) !important;
+}
+html body .profile-fixed-header .stat-num { font-size: 17px !important; line-height: 1.2 !important; }
+html body .profile-fixed-header .stat-label { font-size: 12px !important; margin-top: 2px !important; }
+html body #page-profile .sec {
+    margin: 0 var(--pg) var(--s3) !important;
+    border-radius: var(--r-lg) !important;
+}
+html body #page-profile .sec:first-of-type { margin-top: var(--s3) !important; }
+html body #page-profile .sec-h { padding: 14px var(--s4) !important; font-size: 16px !important; }
+html body .profile-actions { padding: var(--s2) var(--pg) calc(24px + env(safe-area-inset-bottom)) !important; }
+html body .profile-logout { min-height: 48px !important; border-radius: var(--r-pill) !important; }
+
+/* ---------- 登录页 ---------- */
+html body #page-register { padding-left: var(--pg) !important; padding-right: var(--pg) !important; box-sizing: border-box; }
+/* Logo 区块在按钮上方的空间里垂直居中（原来贴在顶部，下面空一大块）；按钮仍在下方便于单手点按 */
+html body #page-register .register-header {
+    flex: 1 1 auto !important;
+    display: flex !important; flex-direction: column; align-items: center; justify-content: center;
+    margin: 0 0 var(--s5) !important;
+}
+html body #page-register .register-koko-logo { height: 48px !important; width: auto !important; margin: 0 0 var(--s2) !important; }
+html body #page-register .register-buttons { margin-top: 0 !important; }
+html body #page-register .btn-login {
+    min-height: 52px !important;
+    border-radius: 14px !important;
+    margin-bottom: var(--s3) !important;
+}
+/* 白色按钮上的邮件 / 手机图标改成深色，原来是白色看不见 */
+html body #page-register .btn-email svg,
+html body #page-register .btn-phone svg { color: #0B2230 !important; fill: #0B2230 !important; }
+html body #page-register .btn-email svg *,
+html body #page-register .btn-phone svg * { fill: #0B2230 !important; }
+html body #page-register .register-footer a { color: #7FE9CF !important; }
+
+/* ---------- 弹窗 ----------
+ * 弹窗是浅色底，但正文用的 --text-main / --text-gray 是给深色背景准备的浅色，
+ * 导致产品详情、确认购买、等级说明、隐私政策等弹窗里的文字几乎看不见。
+ * 在弹窗内把这两个颜色换成深色；薄荷绿文字在白底上太浅，改用深一点的同色系。 */
+html body .m-box {
+    --text-main: var(--space-ink);
+    --text-gray: var(--space-muted);
+}
+html body .m-box li,
+html body .m-box strong,
+html body .m-box td,
+html body .m-box ol,
+html body .m-box ul { color: var(--space-ink) !important; }
+html body .m-box th,
+html body .m-box [style*="color:var(--primary)"],
+html body .m-box [style*="color: var(--primary)"],
+html body .m-box #det-win,
+html body .m-box #det-i-cost,
+html body .m-box #conf-orig-price,
+html body .m-box #product-info-price { color: #0E8A70 !important; }
+
+/* 商城搜索框：输入框较窄，提示文字放不下时用省略号收尾，不再被硬切 */
+html body .shop-search input { font-size: 14px !important; text-overflow: ellipsis; min-width: 0; }
+html body .shop-search input::placeholder { text-overflow: ellipsis; }
+
+/* ---------- 底部导航 ---------- */
+html body .nav { height: 60px !important; padding-bottom: env(safe-area-inset-bottom); }
+html body .nav-l span { font-size: 15px !important; font-weight: 700 !important; }

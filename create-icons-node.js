@@ -14,13 +14,13 @@ function createIcon(size, filename) {
     ctx.fillStyle = '#FFA500';
     ctx.fillRect(0, 0, size, size);
     
-    // 黑色KOKO文字
+    // 黑色AFRICA文字
     ctx.fillStyle = '#1C1C1C';
     const fontSize = Math.floor(size * 0.35);
-    ctx.font = `bold ${fontSize}px Arial Black`;
+    ctx.font = `italic bold ${fontSize}px Arial`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText('KOKO', size / 2, size / 2);
+    ctx.fillText('AFRICA', size / 2, size / 2);
     
     // 保存文件
     const buffer = canvas.toBuffer('image/png');

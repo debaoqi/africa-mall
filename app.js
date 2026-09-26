@@ -1444,7 +1444,7 @@ const App = (function () {
         };
         S.unit = Math.ceil(currentProductInfo.p / S.gridSize);
         
-        // 更新KOKO界面显示 - 只更新内容区域，保留LED显示
+        // 更新AFRICA界面显示 - 只更新内容区域，保留LED显示
         const c = document.getElementById('lucky-top-content');
         const emptyHint = document.getElementById('lucky-empty-hint');
         if (emptyHint) emptyHint.style.display = 'none';
@@ -1491,7 +1491,7 @@ const App = (function () {
         // 更新界面
         upd();
         
-        // 跳转到KOKO界面
+        // 跳转到AFRICA界面
         nav('lucky');
     }
 
@@ -1540,7 +1540,7 @@ const App = (function () {
         if (idx >= 0) document.querySelectorAll('.nav-l')[idx].classList.add('active');
         document.getElementById('page-container').scrollTop = 0;
         
-        // 如果切换到KOKO页面，检查是否需要显示空状态提示
+        // 如果切换到AFRICA页面，检查是否需要显示空状态提示
         if (id === 'lucky') {
             const emptyHint = document.getElementById('lucky-empty-hint');
             const luckyContent = document.getElementById('lucky-top-content');
@@ -1557,7 +1557,7 @@ const App = (function () {
                     emptyHintEl = document.createElement('div');
                     emptyHintEl.className = 'lucky-empty-hint';
                     emptyHintEl.id = 'lucky-empty-hint';
-                    emptyHintEl.innerHTML = '请到首页或商城中选择商品<br>KOKO一下！';
+                    emptyHintEl.innerHTML = '请到首页或商城中选择商品<br>AFRICA一下！';
                     luckyContent.insertBefore(emptyHintEl, luckyContent.firstChild);
                 }
                 
@@ -1703,11 +1703,11 @@ const App = (function () {
         document.getElementById('lbl-cost').value = c;
         updateLedPrice(c);
         const b = document.getElementById('btn-pay');
-        // disable KOKO支付 if no selections OR current grid size not allowed for this product
+        // disable AFRICA支付 if no selections OR current grid size not allowed for this product
         b.disabled = S.sel.size === 0 || !isGridAllowed(S.gridSize);
-        b.textContent = S.sel.size === 0 ? 'KOKO支付' : `支付 ¥${c}`;
+        b.textContent = S.sel.size === 0 ? 'AFRICA支付' : `支付 ¥${c}`;
         
-        // 显示/隐藏KOKO页面空状态提示文字
+        // 显示/隐藏AFRICA页面空状态提示文字
         const emptyHint = document.getElementById('lucky-empty-hint');
         const luckyContent = document.getElementById('lucky-top-content');
         if (luckyContent) {
@@ -1723,7 +1723,7 @@ const App = (function () {
                 emptyHintEl = document.createElement('div');
                 emptyHintEl.className = 'lucky-empty-hint';
                 emptyHintEl.id = 'lucky-empty-hint';
-                emptyHintEl.innerHTML = '请到首页或商城中选择商品<br>KOKO一下！';
+                emptyHintEl.innerHTML = '请到首页或商城中选择商品<br>AFRICA一下！';
                 luckyContent.insertBefore(emptyHintEl, luckyContent.firstChild);
             }
             
@@ -2538,7 +2538,7 @@ const App = (function () {
         <div class="card-foot">
             <div class="foot-btns">
                 <div class="f-btn fb-price" onclick="event.stopPropagation(); App.showProductInfo(${itemJson})">单价${escapeHtml(i.p)}</div>
-                <div class="f-btn fb-koko" onclick="event.stopPropagation(); App.toLucky('${safeName}', ${i.p}, '${safeIcon}', '${safeImg}')">KOKO购</div>
+                <div class="f-btn fb-koko" onclick="event.stopPropagation(); App.toLucky('${safeName}', ${i.p}, '${safeIcon}', '${safeImg}')">AFRICA购</div>
             </div>
         </div>
     </div>`
@@ -2941,71 +2941,9 @@ const App = (function () {
     }
     
     function swt(k, el) {
-        // 如果品类区域是展开状态，先收起
-        const catsEl = document.getElementById('shop-cats');
-        const wasExpanded = catsEl && catsEl.classList.contains('expanded');
-        
-        // 更新选中状态
+        // 切换品类时保持展开状态，仅由小箭头控制展开/折叠
         document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
         el.classList.add('active');
-        
-        // 如果之前是展开状态，需要将选中的品类移到第一个位置
-        if (wasExpanded) {
-            catsEl.classList.remove('expanded');
-            
-            // 获取所有品类数据
-            const allCats = [
-                { k: 'ph', l: '手机通讯', i: 'fa-mobile-alt' },
-                { k: 'sp', l: '运动服饰', i: 'fa-tshirt' },
-                { k: 'fa', l: '时尚名品', i: 'fa-shopping-bag' },
-                { k: 'li', l: '生活用品', i: 'fa-home' },
-                { k: 'di', l: '电脑数码', i: 'fa-laptop' },
-                { k: 'sh', l: '服装鞋帽', i: 'fa-shoe-prints' },
-                { k: 'be', l: '美妆配饰', i: 'fa-magic' },
-                { k: 'fu', l: '家具家居', i: 'fa-couch' },
-                { k: 'bk', l: '图书书籍', i: 'fa-book' },
-                { k: 'fit', l: '健身装备', i: 'fa-dumbbell' },
-                { k: 'toy', l: '玩具游戏', i: 'fa-gamepad' },
-                { k: 'car', l: '汽车用品', i: 'fa-car' },
-                { k: 'mus', l: '音乐乐器', i: 'fa-music' },
-                { k: 'jew', l: '珠宝首饰', i: 'fa-gem' },
-                { k: 'art', l: '艺术用品', i: 'fa-palette' },
-                { k: 'wat', l: '水上运动', i: 'fa-swimmer' },
-                { k: 'gam', l: '游戏点卡', i: 'fa-gamepad' },
-                { k: 'pet', l: '宠物用品', i: 'fa-paw' },
-                { k: 'gard', l: '园艺用品', i: 'fa-leaf' },
-                { k: 'bag', l: '旅行箱包', i: 'fa-suitcase' },
-                { k: 'out', l: '户外运动', i: 'fa-mountain' },
-                { k: 'baby', l: '婴儿用品', i: 'fa-baby' },
-                { k: 'tool', l: '五金工具', i: 'fa-tools' },
-                { k: 'sh2', l: '精品二手', i: 'fa-recycle' }
-            ];
-            
-            // 找到选中的品类
-            const selectedCat = allCats.find(c => c.k === k);
-            if (selectedCat) {
-                // 获取当前前4个品类（排除选中的）
-                const currentFirstFour = allCats.slice(0, 4);
-                const newFirstFour = [selectedCat, ...currentFirstFour.filter(c => c.k !== k).slice(0, 3)];
-                
-                // 重新渲染品类按钮，选中的品类在第一个位置
-                let h = '';
-                newFirstFour.forEach((x, i) => {
-                    h += `<div class="cat-btn ${i === 0 ? 'active' : ''}" onclick="App.swt('${x.k}',this)"><i class="fas ${x.i}"></i> ${x.l}</div>`;
-                });
-                
-                catsEl.innerHTML = h;
-                
-                // 更新展开/折叠按钮（在类别区域下方）
-                const expandBtn = document.getElementById('cat-expand-btn');
-                if (expandBtn) {
-                    expandBtn.querySelector('i').className = 'fas fa-chevron-down';
-                    expandBtn.style.display = 'flex';
-                }
-            }
-        }
-        
-        // 切换产品列表（与收起同时进行，确保同步）
         renderShop(k);
     }
     function renderShop(k) {
@@ -3029,7 +2967,7 @@ const App = (function () {
             </div>
             <div class="foot-btns">
                 <div class="f-btn fb-price" onclick="event.stopPropagation(); App.showProductInfo(${itemJson})">单价${escapeHtml(i.p)}</div>
-                <div class="f-btn fb-koko" onclick="event.stopPropagation(); App.toLucky('${safeName}', ${i.p}, '${safeIcon}', '${safeImg}')">KOKO购</div>
+                <div class="f-btn fb-koko" onclick="event.stopPropagation(); App.toLucky('${safeName}', ${i.p}, '${safeIcon}', '${safeImg}')">AFRICA购</div>
             </div>
         </div>
         <div class="shop-img-placeholder">${imgHtml}</div>
@@ -3060,7 +2998,7 @@ const App = (function () {
             </div>
             <div class="foot-btns">
                 <div class="f-btn fb-price" onclick="event.stopPropagation(); App.showProductInfo(${itemJson})">单价${escapeHtml(i.p)}</div>
-                <div class="f-btn fb-koko" onclick="event.stopPropagation(); App.toLucky('${safeName}', ${i.p}, '${safeIcon}', '${safeImg}')">KOKO购</div>
+                <div class="f-btn fb-koko" onclick="event.stopPropagation(); App.toLucky('${safeName}', ${i.p}, '${safeIcon}', '${safeImg}')">AFRICA购</div>
             </div>
         </div>
         <div class="shop-img-placeholder">${imgHtml}</div>
@@ -5433,7 +5371,7 @@ const App = (function () {
         
         fetch(url, {
             headers: {
-                'User-Agent': 'KOKO-Mall-App'
+                'User-Agent': 'AFRICA-Mall-App'
             }
         })
             .then(response => {
