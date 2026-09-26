@@ -329,6 +329,44 @@ html body .prof-head .recharge-box .rech-inp-s { width: 60px !important; }
 html body .prof-head .recharge-box { margin-left: auto !important; padding: 8px 8px 8px 12px !important; border-radius: var(--r-pill) !important; }
 html body .prof-head .recharge-box .rech-inp-s,
 html body .prof-head .recharge-box .rech-confirm { border-radius: var(--r-pill) !important; }
+
+/* 头部绿色卡片：和下方白色卡片同宽（左右 16px）、同圆角（16px）
+   上边距用外层 padding 而不是 margin，避免外边距穿透导致吸顶时顶部露缝 */
+html body .profile-fixed-header { padding-top: var(--s3) !important; }
+html body .profile-fixed-header .prof-head {
+    width: auto !important;
+    margin: 0 var(--pg) !important;
+    padding: var(--s4) !important;
+    border-radius: var(--r-lg) !important;
+    gap: var(--s3) !important;
+    flex-wrap: wrap !important;
+    box-sizing: border-box;
+}
+html body .prof-head .user-info { flex: 0 1 auto !important; }
+/* 充值框拉长：宽屏时占满名字右侧的剩余空间，手机上放不下就单独占满一整行；圆角与卡片一致 */
+html body .prof-head .recharge-box {
+    flex: 1 1 220px !important;
+    min-width: 0;
+    max-width: none !important;
+    margin-left: 0 !important;
+    padding: 6px !important;
+    padding-left: var(--s3) !important;
+    gap: var(--s2) !important;
+    border-radius: var(--r-md) !important;
+    box-sizing: border-box;
+}
+html body .prof-head .recharge-box .rech-inp-s {
+    flex: 1 1 auto !important;
+    width: auto !important;
+    min-width: 40px;
+    border-radius: 8px !important;
+}
+html body .prof-head .recharge-box .rech-confirm {
+    flex: 0 0 auto;
+    border-radius: 8px !important;
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+}
 html body .profile-fixed-header .stats {
     padding: var(--s3) var(--pg) var(--s3) !important;
     margin: 0 !important;
