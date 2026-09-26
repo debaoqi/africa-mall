@@ -26,6 +26,26 @@
 html body .header {
     padding: 10px var(--pg) !important;
     align-items: center !important;
+    /* 固定高度：下方吸顶的搜索栏(56px)、首页 banner(70px) 都按这个高度定位，
+       手机字体不同时顶栏高度会变，中间就会露出一条滚动内容 */
+    height: 56px !important;
+    min-height: 56px !important;
+    box-sizing: border-box !important;
+}
+/* 刘海屏安全区：body 已经留了顶部安全距离，滚动容器再留一次会让顶栏往下吸，
+   上方空出的一截会露出滚动内容 */
+html body .page-container { padding-top: 0 !important; }
+/* 保险：吸顶区块向上铺一层底色一直到顶栏后面，任何缝隙都被盖住（顶栏层级更高，不受影响） */
+html body .shop-top::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -56px;
+    height: 56px;
+    background: var(--bg, #1E304C);
+    z-index: -1;
+    pointer-events: none;
 }
 html body .header .logo { font-size: 22px !important; line-height: 1 !important; }
 html body .header .logo span { font-size: 22px !important; }
@@ -52,7 +72,7 @@ html body #page-home .hero::before {
     z-index: -1;
     left: calc(-1 * var(--pg) - 1px);
     right: calc(-1 * var(--pg) - 1px);
-    top: -16px;
+    top: -70px;           /* 一直铺到顶栏后面 */
     bottom: -48px;
     height: auto !important;
     background: var(--bg, #1E304C);
