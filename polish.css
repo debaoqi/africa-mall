@@ -345,10 +345,10 @@ html body .profile-fixed-header .prof-head {
 html body .prof-head .user-info { flex: 0 1 auto !important; }
 /* 充值框拉长：宽屏时占满名字右侧的剩余空间，手机上放不下就单独占满一整行；圆角与卡片一致 */
 html body .prof-head .recharge-box {
-    flex: 1 1 220px !important;
+    flex: 0 1 276px !important;     /* 宽屏：约为卡片宽度的一半，靠右 */
     min-width: 0;
     max-width: none !important;
-    margin-left: 0 !important;
+    margin-left: auto !important;
     padding: 6px !important;
     padding-left: var(--s3) !important;
     gap: var(--s2) !important;
@@ -366,6 +366,10 @@ html body .prof-head .recharge-box .rech-confirm {
     border-radius: 8px !important;
     padding-left: 14px !important;
     padding-right: 14px !important;
+}
+/* 手机：一行放不下时充值框换到下一行，占满整行 */
+@media (max-width: 480px) {
+    html body .prof-head .recharge-box { flex: 1 1 100% !important; margin-left: 0 !important; }
 }
 html body .profile-fixed-header .stats {
     padding: var(--s3) var(--pg) var(--s3) !important;
