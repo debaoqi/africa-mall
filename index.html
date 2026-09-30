@@ -6691,7 +6691,7 @@ textarea:focus-visible {
                             const d = document.createElement('div');
                             d.className = (S.sel.has(i) ? 'cell sel ' : 'cell ') + (half === 0 ? 'tri-a' : 'tri-b');
                             d.dataset.i = i;
-                            d.innerHTML = `<span>${String(i + 1).padStart(2, '0')}</span>`; // 1-9 显示为 01-09
+                            d.innerHTML = `<span>${fmtNum(i + 1)}</span>`;
                             pair.appendChild(d);
                         });
                         fragment.appendChild(pair);
@@ -6703,7 +6703,7 @@ textarea:focus-visible {
                     const d = document.createElement('div');
                     d.className = S.sel.has(i) ? 'cell sel' : 'cell';
                     d.dataset.i = i;
-                    d.innerHTML = `<span>${String(i + 1).padStart(2, '0')}</span>`; // 1-9 显示为 01-09
+                    d.innerHTML = `<span>${fmtNum(i + 1)}</span>`;
                     fragment.appendChild(d);
                 }
                 c.replaceChildren(fragment);
@@ -6957,13 +6957,13 @@ textarea:focus-visible {
                     // 快速滚动阶段（前70%）
                     if (rollCount < totalRolls * 0.7) {
                         currentNum = Math.floor(Math.random() * gridSize) + 1;
-                        numberEl.textContent = currentNum;
+                        numberEl.textContent = fmtNum(currentNum);
                         setTimeout(roll, Math.floor(25 * timeMultiplier));
                     }
                     // 减速阶段（70%-90%）
                     else if (rollCount < totalRolls * 0.9) {
                         currentNum = Math.floor(Math.random() * gridSize) + 1;
-                        numberEl.textContent = currentNum;
+                        numberEl.textContent = fmtNum(currentNum);
                         setTimeout(roll, Math.floor(75 * timeMultiplier));
                     }
                     // 最后阶段，逐渐接近中奖数字（90%-100%）
@@ -6976,11 +6976,11 @@ textarea:focus-visible {
                             } else if (currentNum > winNum) {
                                 currentNum--;
                             }
-                            numberEl.textContent = currentNum;
+                            numberEl.textContent = fmtNum(currentNum);
                             setTimeout(roll, Math.floor(100 * timeMultiplier));
                         } else {
                             // 到达中奖数字，停止滚动
-                            numberEl.textContent = winNum;
+                            numberEl.textContent = fmtNum(winNum);
                             numberEl.style.transform = 'scale(1.2)';
                             numberEl.style.transition = 'transform 0.15s ease';
                             setTimeout(() => {
@@ -6996,6 +6996,8 @@ textarea:focus-visible {
                 // 开始滚动
                 setTimeout(roll, Math.floor(50 * timeMultiplier));
             }
+            // 号码统一显示为两位数：1-9 显示为 01-09（只影响显示，数值不变）
+            function fmtNum(n) { return String(n).padStart(2, '0'); }
             function generateCode() {
                 const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
                 let code = '';
@@ -8300,7 +8302,7 @@ textarea:focus-visible {
             }
             function ins(id, h) { const l = document.getElementById(id); const e = l.querySelector('.empty-msg'); if (e) e.remove(); const z = document.createElement('div'); z.innerHTML = h; l.insertBefore(z.firstElementChild, l.firstChild); }
             function det(d) {
-                document.getElementById('det-win').textContent = d.winNum;
+                document.getElementById('det-win').textContent = fmtNum(d.winNum);
                 const winMsgEl = document.getElementById('det-win-msg');
                 if (d.w) {
                     winMsgEl.style.display = 'none';
@@ -8314,7 +8316,7 @@ textarea:focus-visible {
                 d.nums.forEach(n => {
                     const sp = document.createElement('span');
                     sp.className = 'num-badge' + (n === d.winNum ? ' win-num' : '');
-                    sp.textContent = n;
+                    sp.textContent = fmtNum(n);
                     c.appendChild(sp);
                 });
 
