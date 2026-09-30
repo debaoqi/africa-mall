@@ -6691,7 +6691,7 @@ textarea:focus-visible {
                             const d = document.createElement('div');
                             d.className = (S.sel.has(i) ? 'cell sel ' : 'cell ') + (half === 0 ? 'tri-a' : 'tri-b');
                             d.dataset.i = i;
-                            d.innerHTML = `<span>${i + 1}</span>`;
+                            d.innerHTML = `<span>${String(i + 1).padStart(2, '0')}</span>`; // 1-9 显示为 01-09
                             pair.appendChild(d);
                         });
                         fragment.appendChild(pair);
@@ -6703,7 +6703,7 @@ textarea:focus-visible {
                     const d = document.createElement('div');
                     d.className = S.sel.has(i) ? 'cell sel' : 'cell';
                     d.dataset.i = i;
-                    d.innerHTML = `<span>${i + 1}</span>`;
+                    d.innerHTML = `<span>${String(i + 1).padStart(2, '0')}</span>`; // 1-9 显示为 01-09
                     fragment.appendChild(d);
                 }
                 c.replaceChildren(fragment);
