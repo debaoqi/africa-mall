@@ -2720,14 +2720,18 @@
         
         #modal-platform-game,
         #modal-breakout-game,
-        #modal-space-shooter-game {
+        #modal-space-shooter-game,
+        #modal-game-2048,
+        #modal-flappy-game {
             padding: 0;
             align-items: stretch;
         }
         
         #modal-platform-game .m-box,
         #modal-breakout-game .m-box,
-        #modal-space-shooter-game .m-box {
+        #modal-space-shooter-game .m-box,
+        #modal-game-2048 .m-box,
+        #modal-flappy-game .m-box {
             width: 100% !important;
             max-width: 100% !important;
             height: 100% !important;
@@ -3811,16 +3815,16 @@ textarea:focus-visible {
                     <!-- 游戏按钮区域（固定定位） -->
                     <div id="game-buttons-sticky" style="padding:4px 0px; margin:0; box-sizing:border-box; display:block;">
                         <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:4px;">
-                            <!-- 打砖块按钮 -->
-                            <div style="padding:10px 12px; cursor:pointer; text-align:center; margin:0; background:var(--primary); border-radius:2.8px; box-shadow:0 2px 4px rgba(28,28,28,0.1); display:flex; align-items:center; justify-content:center; gap:6px;" onclick="App.openBreakoutGame()">
-                                <i class="fas fa-square" style="font-size:0.8rem; color:#1C1C1C;"></i>
-                                <div style="font-size:0.75rem; font-weight:700; color:#1C1C1C;">打砖块</div>
+                            <!-- 2048 按钮 -->
+                            <div style="padding:10px 12px; cursor:pointer; text-align:center; margin:0; background:var(--primary); border-radius:2.8px; box-shadow:0 2px 4px rgba(28,28,28,0.1); display:flex; align-items:center; justify-content:center; gap:6px;" onclick="App.openGame2048()">
+                                <i class="fas fa-th-large" style="font-size:0.8rem; color:#1C1C1C;"></i>
+                                <div style="font-size:0.75rem; font-weight:700; color:#1C1C1C;">2048</div>
                             </div>
-                            
-                            <!-- 太空射击按钮 -->
-                            <div style="padding:10px 12px; cursor:pointer; text-align:center; margin:0; background:var(--primary); border-radius:2.8px; box-shadow:0 2px 4px rgba(28,28,28,0.1); display:flex; align-items:center; justify-content:center; gap:6px;" onclick="App.openSpaceShooterGame()">
-                                <i class="fas fa-rocket" style="font-size:0.8rem; color:#1C1C1C;"></i>
-                                <div style="font-size:0.75rem; font-weight:700; color:#1C1C1C;">太空射击</div>
+
+                            <!-- 飞翔小鸟按钮 -->
+                            <div style="padding:10px 12px; cursor:pointer; text-align:center; margin:0; background:var(--primary); border-radius:2.8px; box-shadow:0 2px 4px rgba(28,28,28,0.1); display:flex; align-items:center; justify-content:center; gap:6px;" onclick="App.openFlappyGame()">
+                                <i class="fas fa-dove" style="font-size:0.8rem; color:#1C1C1C;"></i>
+                                <div style="font-size:0.75rem; font-weight:700; color:#1C1C1C;">飞翔小鸟</div>
                             </div>
                             
                             <!-- 游戏开发中按钮 -->
@@ -3923,7 +3927,7 @@ textarea:focus-visible {
 
     <link rel="stylesheet" href="space-theme.css?v=43">
     <!-- 版面细节统一：间距 / 尺寸 / 圆角 / 字号（最后加载） -->
-    <link rel="stylesheet" href="polish.css?v=15">
+    <link rel="stylesheet" href="polish.css?v=17">
 
     <div class="nav">
         <div class="nav-l active" onclick="App.nav('home')"><i class="fas fa-home"></i><span>首页</span></div>
@@ -4204,6 +4208,52 @@ textarea:focus-visible {
             <div style="display:flex; gap:10px;">
                 <button class="btn-big btn-out" onclick="App.closeSpaceShooterGame()" style="flex:1;">退出</button>
                 <button class="btn-big btn-grad" onclick="App.spaceShooterRestart()" style="flex:1;">重新开始</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2048 游戏模态框 -->
+    <div class="modal" id="modal-game-2048">
+        <div class="m-box game-box">
+            <div class="game-head">
+                <h3>2048</h3>
+                <button class="game-close" onclick="App.closeGame2048()" aria-label="关闭">&times;</button>
+            </div>
+            <div class="game-stats">
+                <div><span>得分</span><b id="g2048-score">0</b></div>
+                <div><span>最高</span><b id="g2048-best">0</b></div>
+            </div>
+            <div class="g2048-wrap">
+                <div class="g2048-board" id="g2048-board"></div>
+                <div class="game-over" id="g2048-over">
+                    <div>没有可以合并的了</div>
+                    <button class="btn-big btn-grad" onclick="App.game2048Restart()">再来一局</button>
+                </div>
+            </div>
+            <div class="game-hint">上下左右滑动，相同数字碰到一起会合并。<br>首次合成 128 / 256 / 512 / 1024 / 2048 分别奖励 10 / 20 / 50 / 100 / 300 积分</div>
+            <div class="game-actions">
+                <button class="btn-big btn-out" onclick="App.closeGame2048()">退出</button>
+                <button class="btn-big btn-grad" onclick="App.game2048Restart()">重新开始</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 飞翔小鸟游戏模态框 -->
+    <div class="modal" id="modal-flappy-game">
+        <div class="m-box game-box">
+            <div class="game-head">
+                <h3>飞翔小鸟</h3>
+                <button class="game-close" onclick="App.closeFlappyGame()" aria-label="关闭">&times;</button>
+            </div>
+            <div class="game-stats">
+                <div><span>得分</span><b id="flappy-score">0</b></div>
+                <div><span>最高</span><b id="flappy-best">0</b></div>
+            </div>
+            <canvas id="flappy-canvas" class="flappy-canvas"></canvas>
+            <div class="game-hint">点击屏幕让小鸟往上飞，穿过柱子之间的空隙。<br>每穿过 10 根柱子奖励 10 积分</div>
+            <div class="game-actions">
+                <button class="btn-big btn-out" onclick="App.closeFlappyGame()">退出</button>
+                <button class="btn-big btn-grad" onclick="App.flappyRestart()">重新开始</button>
             </div>
         </div>
     </div>
@@ -5935,7 +5985,7 @@ textarea:focus-visible {
                     modal.setAttribute('role', 'dialog');
                     modal.setAttribute('aria-modal', 'true');
                     modal.addEventListener('click', function(event) {
-                        const protectedModals = ['modal-draw', 'modal-platform-game', 'modal-breakout-game', 'modal-space-shooter-game'];
+                        const protectedModals = ['modal-draw', 'modal-platform-game', 'modal-breakout-game', 'modal-space-shooter-game', 'modal-game-2048', 'modal-flappy-game'];
                         if (event.target === modal && !protectedModals.includes(modal.id)) {
                             modal.style.display = 'none';
                         }
@@ -5944,7 +5994,7 @@ textarea:focus-visible {
 
                 document.addEventListener('keydown', function(event) {
                     if (event.key !== 'Escape') return;
-                    const protectedModals = ['modal-draw', 'modal-platform-game', 'modal-breakout-game', 'modal-space-shooter-game'];
+                    const protectedModals = ['modal-draw', 'modal-platform-game', 'modal-breakout-game', 'modal-space-shooter-game', 'modal-game-2048', 'modal-flappy-game'];
                     const visible = Array.from(document.querySelectorAll('.modal')).reverse().find(modal =>
                         getComputedStyle(modal).display !== 'none' && !protectedModals.includes(modal.id)
                     );
@@ -10733,8 +10783,331 @@ textarea:focus-visible {
                     .catch(function () { return false; });
             }
 
+            // ========== 2048 ==========
+            // 上下左右滑动（电脑可用方向键），相同数字相撞合并；首次合成指定数字奖励积分
+            const G2048_REWARDS = { 128: 10, 256: 20, 512: 50, 1024: 100, 2048: 300 };
+            const g2048 = { board: [], score: 0, best: 0, over: false, rewarded: {}, newIdx: -1, mergedIdx: [], start: null, keyHandler: null };
 
-            return { init, nav, swt, preRecharge, doRech, selectPaymentMethod, buyOrig, confirmBuyOrig, closeConfirmOrig, draw, closeDraw, fav, exch, confirmExch, closeConfirmExch, subReg, openReg, openCS, subCS, togPt, det, openFavs, togFavLi, actFav, toLucky, showProductInfo, buyProduct, showItemDetail, addRec, handleFileChange, switchGrid, doSearch, renderSearchHistory, clearSearchHistory, delSearchHist, toggleSearchHist, loginGoogle, loginFacebook, loginEmail, loginPhone, submitEmailLogin, submitPhoneLogin, logout, editSecurityText, openWinNoticeModal, closeWinNoticeModal, openAddressEdit, saveAddress, openBreakoutGame, closeBreakoutGame, breakoutRestart, openSpaceShooterGame, closeSpaceShooterGame, spaceShooterRestart, getLocation, openLocationMap, handleLocationClick, openCatDropdown, closeCatDropdown, selectCategoryFromDropdown, toggleCatExpand, openRechargeHistory, openLevelInfo, openPrivacyPolicy, openTermsOfUse, openTroubleSigningIn, openDataSecurity };
+            function openGame2048() {
+                document.getElementById('modal-game-2048').style.display = 'flex';
+                try { g2048.best = parseInt(localStorage.getItem('game2048Best'), 10) || 0; } catch (e) {}
+                const board = document.getElementById('g2048-board');
+                if (!board.dataset.bound) {
+                    board.dataset.bound = '1';
+                    board.addEventListener('pointerdown', e => { g2048.start = { x: e.clientX, y: e.clientY }; });
+                    board.addEventListener('pointerup', e => {
+                        if (!g2048.start) return;
+                        const dx = e.clientX - g2048.start.x, dy = e.clientY - g2048.start.y;
+                        g2048.start = null;
+                        if (Math.max(Math.abs(dx), Math.abs(dy)) < 24) return;
+                        if (Math.abs(dx) > Math.abs(dy)) move2048(dx > 0 ? 'R' : 'L'); else move2048(dy > 0 ? 'D' : 'U');
+                    });
+                    board.addEventListener('pointercancel', () => { g2048.start = null; });
+                    board.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
+                }
+                if (!g2048.keyHandler) {
+                    g2048.keyHandler = e => {
+                        const dir = { ArrowLeft: 'L', ArrowRight: 'R', ArrowUp: 'U', ArrowDown: 'D' }[e.key];
+                        if (dir) { e.preventDefault(); move2048(dir); }
+                    };
+                }
+                document.addEventListener('keydown', g2048.keyHandler);
+                if (!g2048.board.length || g2048.over) game2048Restart(); else render2048();
+            }
+
+            function closeGame2048() {
+                document.getElementById('modal-game-2048').style.display = 'none';
+                if (g2048.keyHandler) document.removeEventListener('keydown', g2048.keyHandler);
+            }
+
+            function game2048Restart() {
+                g2048.board = new Array(16).fill(0);
+                g2048.score = 0;
+                g2048.over = false;
+                g2048.rewarded = {};
+                g2048.mergedIdx = [];
+                add2048Tile();
+                add2048Tile();
+                render2048();
+            }
+
+            function add2048Tile() {
+                const empty = [];
+                g2048.board.forEach((v, i) => { if (!v) empty.push(i); });
+                if (!empty.length) return;
+                const i = empty[Math.floor(Math.random() * empty.length)];
+                g2048.board[i] = Math.random() < 0.9 ? 2 : 4;
+                g2048.newIdx = i;
+            }
+
+            function can2048Move() {
+                const b = g2048.board;
+                for (let i = 0; i < 16; i++) {
+                    if (!b[i]) return true;
+                    if (i % 4 < 3 && b[i] === b[i + 1]) return true;
+                    if (i < 12 && b[i] === b[i + 4]) return true;
+                }
+                return false;
+            }
+
+            function move2048(dir) {
+                if (g2048.over || !g2048.board.length) return;
+                let moved = false, gained = 0;
+                g2048.mergedIdx = [];
+                for (let r = 0; r < 4; r++) {
+                    // 按移动方向，从靠边的一格开始取出这一行/列
+                    const idx = [];
+                    for (let j = 0; j < 4; j++) {
+                        if (dir === 'L') idx.push(r * 4 + j);
+                        else if (dir === 'R') idx.push(r * 4 + 3 - j);
+                        else if (dir === 'U') idx.push(j * 4 + r);
+                        else idx.push((3 - j) * 4 + r);
+                    }
+                    const vals = idx.map(k => g2048.board[k]).filter(v => v);
+                    const out = [];
+                    for (let k = 0; k < vals.length; k++) {
+                        if (vals[k] === vals[k + 1]) {
+                            out.push(vals[k] * 2);
+                            gained += vals[k] * 2;
+                            g2048.mergedIdx.push(idx[out.length - 1]);
+                            k++;
+                        } else {
+                            out.push(vals[k]);
+                        }
+                    }
+                    while (out.length < 4) out.push(0);
+                    idx.forEach((k, j) => { if (g2048.board[k] !== out[j]) moved = true; g2048.board[k] = out[j]; });
+                }
+                if (!moved) return;
+                g2048.score += gained;
+                if (g2048.score > g2048.best) {
+                    g2048.best = g2048.score;
+                    try { localStorage.setItem('game2048Best', String(g2048.best)); } catch (e) {}
+                }
+                add2048Tile();
+
+                // 首次合成里程碑数字时奖励积分（每局每个数字只奖励一次）
+                const maxTile = Math.max(...g2048.board);
+                let reward = 0;
+                Object.keys(G2048_REWARDS).forEach(k => {
+                    const v = Number(k);
+                    if (maxTile >= v && !g2048.rewarded[v]) { g2048.rewarded[v] = true; reward += G2048_REWARDS[v]; }
+                });
+                if (reward) {
+                    S.pts += reward;
+                    upd();
+                    msg(`合成 ${maxTile}！获得 ${reward} 积分`);
+                }
+
+                if (!can2048Move()) g2048.over = true;
+                render2048();
+            }
+
+            function render2048() {
+                const board = document.getElementById('g2048-board');
+                if (!board) return;
+                if (board.children.length !== 16) {
+                    board.innerHTML = '';
+                    for (let i = 0; i < 16; i++) { const c = document.createElement('div'); c.className = 'g2048-cell'; board.appendChild(c); }
+                }
+                g2048.board.forEach((v, i) => {
+                    const c = board.children[i];
+                    c.textContent = v || '';
+                    c.dataset.v = v || '';
+                    c.className = 'g2048-cell' + (v >= 1024 ? ' huge' : v >= 128 ? ' big' : '') + (v > 2048 ? ' max' : '');
+                    if (v && (i === g2048.newIdx || g2048.mergedIdx.includes(i))) {
+                        void c.offsetWidth; // 重新触发动画
+                        c.classList.add('pop');
+                    }
+                });
+                g2048.newIdx = -1;
+                document.getElementById('g2048-score').textContent = g2048.score;
+                document.getElementById('g2048-best').textContent = g2048.best;
+                document.getElementById('g2048-over').classList.toggle('show', g2048.over);
+            }
+
+            // ========== 飞翔小鸟 ==========
+            // 点击屏幕（电脑可按空格）让小鸟往上飞，穿过柱子空隙；每穿过 10 根柱子奖励 10 积分
+            const flappy = { canvas: null, ctx: null, w: 0, h: 0, bird: null, pipes: [], state: 'ready', score: 0, best: 0, loop: null, last: 0, spawn: 0, overAt: 0, keyHandler: null };
+
+            function openFlappyGame() {
+                document.getElementById('modal-flappy-game').style.display = 'flex';
+                try { flappy.best = parseInt(localStorage.getItem('flappyBest'), 10) || 0; } catch (e) {}
+                if (!flappy.keyHandler) {
+                    flappy.keyHandler = e => { if (e.code === 'Space' || e.key === 'ArrowUp') { e.preventDefault(); flappyFlap(); } };
+                }
+                document.addEventListener('keydown', flappy.keyHandler);
+                // 等弹窗布局完成后再按实际大小设置画布
+                setTimeout(() => {
+                    const c = document.getElementById('flappy-canvas');
+                    flappy.canvas = c;
+                    const rect = c.getBoundingClientRect();
+                    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+                    flappy.w = rect.width;
+                    flappy.h = rect.height;
+                    c.width = Math.round(rect.width * dpr);
+                    c.height = Math.round(rect.height * dpr);
+                    flappy.ctx = c.getContext('2d');
+                    flappy.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+                    if (!c.dataset.bound) {
+                        c.dataset.bound = '1';
+                        c.addEventListener('pointerdown', e => { e.preventDefault(); flappyFlap(); });
+                    }
+                    flappyRestart();
+                }, 60);
+            }
+
+            function closeFlappyGame() {
+                document.getElementById('modal-flappy-game').style.display = 'none';
+                if (flappy.loop) cancelAnimationFrame(flappy.loop);
+                flappy.loop = null;
+                if (flappy.keyHandler) document.removeEventListener('keydown', flappy.keyHandler);
+            }
+
+            function flappyRestart() {
+                if (!flappy.ctx) return;
+                flappy.bird = { x: flappy.w * 0.28, y: flappy.h * 0.45, vy: 0, r: Math.max(11, flappy.w * 0.035) };
+                flappy.pipes = [];
+                flappy.score = 0;
+                flappy.state = 'ready';
+                flappy.spawn = 0;
+                flappy.last = 0;
+                updateFlappyUI();
+                if (flappy.loop) cancelAnimationFrame(flappy.loop);
+                flappy.loop = requestAnimationFrame(flappyStep);
+            }
+
+            function flappyFlap() {
+                if (!flappy.bird) return;
+                if (flappy.state === 'over') {
+                    if (performance.now() - flappy.overAt > 600) flappyRestart(); // 避免撞柱瞬间的误触直接重开
+                    return;
+                }
+                if (flappy.state === 'ready') flappy.state = 'play';
+                flappy.bird.vy = -flappy.h * 0.0135;
+            }
+
+            function flappyStep(t) {
+                const f = flappy, b = f.bird;
+                const dt = f.last ? Math.min(t - f.last, 40) / 16.67 : 1; // 按 60 帧换算，不同刷新率手感一致
+                f.last = t;
+                const pipeW = f.w * 0.16;
+                const gap = f.h * 0.3;
+                const speed = f.w * 0.0065 * (1 + Math.min(f.score, 30) * 0.012);
+
+                if (f.state === 'ready') {
+                    b.y = f.h * 0.45 + Math.sin(t / 280) * 6;
+                } else if (f.state === 'play') {
+                    b.vy += f.h * 0.0007 * dt;
+                    b.y += b.vy * dt;
+                    f.spawn -= dt * 16.67;
+                    if (f.spawn <= 0) {
+                        const margin = f.h * 0.12;
+                        const top = margin + Math.random() * (f.h * 0.88 - gap - margin * 2);
+                        f.pipes.push({ x: f.w, top, passed: false });
+                        f.spawn = 1500;
+                    }
+                    f.pipes.forEach(p => { p.x -= speed * dt; });
+                    f.pipes = f.pipes.filter(p => p.x + pipeW > 0);
+
+                    f.pipes.forEach(p => {
+                        if (!p.passed && p.x + pipeW < b.x - b.r) {
+                            p.passed = true;
+                            f.score++;
+                            if (f.score > f.best) {
+                                f.best = f.score;
+                                try { localStorage.setItem('flappyBest', String(f.best)); } catch (e) {}
+                            }
+                            if (f.score % 10 === 0) {
+                                S.pts += 10;
+                                upd();
+                                msg(`穿过 ${f.score} 根柱子！获得 10 积分`);
+                            }
+                            updateFlappyUI();
+                        }
+                    });
+
+                    // 碰撞：地面、顶部、柱子（圆和矩形取最近点判断）
+                    const ground = f.h * 0.88;
+                    let hit = b.y + b.r >= ground || b.y - b.r <= 0;
+                    f.pipes.forEach(p => {
+                        [[0, p.top], [p.top + gap, ground]].forEach(([y1, y2]) => {
+                            const cx = Math.max(p.x, Math.min(b.x, p.x + pipeW));
+                            const cy = Math.max(y1, Math.min(b.y, y2));
+                            if ((b.x - cx) ** 2 + (b.y - cy) ** 2 < (b.r * 0.85) ** 2) hit = true;
+                        });
+                    });
+                    if (hit) {
+                        f.state = 'over';
+                        f.overAt = performance.now();
+                        b.y = Math.min(b.y, ground - b.r);
+                    }
+                }
+                drawFlappy(pipeW, gap);
+                f.loop = requestAnimationFrame(flappyStep);
+            }
+
+            function drawFlappy(pipeW, gap) {
+                const f = flappy, ctx = f.ctx, b = f.bird, w = f.w, h = f.h, ground = h * 0.88;
+                const sky = ctx.createLinearGradient(0, 0, 0, h);
+                sky.addColorStop(0, '#182A43');
+                sky.addColorStop(1, '#27456B');
+                ctx.fillStyle = sky;
+                ctx.fillRect(0, 0, w, h);
+
+                f.pipes.forEach(p => {
+                    ctx.fillStyle = '#43E0BC';
+                    ctx.fillRect(p.x, 0, pipeW, p.top);
+                    ctx.fillRect(p.x, p.top + gap, pipeW, ground - p.top - gap);
+                    ctx.fillStyle = '#2BBF9F'; // 柱口
+                    ctx.fillRect(p.x - 4, p.top - 14, pipeW + 8, 14);
+                    ctx.fillRect(p.x - 4, p.top + gap, pipeW + 8, 14);
+                });
+
+                ctx.fillStyle = '#165B64';
+                ctx.fillRect(0, ground, w, h - ground);
+                ctx.fillStyle = '#43E0BC';
+                ctx.fillRect(0, ground, w, 3);
+
+                // 小鸟：身体随速度微微倾斜
+                ctx.save();
+                ctx.translate(b.x, b.y);
+                ctx.rotate(Math.max(-0.5, Math.min(0.9, b.vy * 0.06)));
+                ctx.fillStyle = '#F5A623';
+                ctx.beginPath(); ctx.arc(0, 0, b.r, 0, Math.PI * 2); ctx.fill();
+                ctx.fillStyle = '#FFD166';
+                ctx.beginPath(); ctx.ellipse(-b.r * 0.2, b.r * 0.25, b.r * 0.55, b.r * 0.35, 0, 0, Math.PI * 2); ctx.fill();
+                ctx.fillStyle = '#fff';
+                ctx.beginPath(); ctx.arc(b.r * 0.35, -b.r * 0.3, b.r * 0.32, 0, Math.PI * 2); ctx.fill();
+                ctx.fillStyle = '#17263D';
+                ctx.beginPath(); ctx.arc(b.r * 0.45, -b.r * 0.3, b.r * 0.14, 0, Math.PI * 2); ctx.fill();
+                ctx.fillStyle = '#E4572E';
+                ctx.beginPath(); ctx.moveTo(b.r * 0.8, 0); ctx.lineTo(b.r * 1.45, b.r * 0.15); ctx.lineTo(b.r * 0.8, b.r * 0.4); ctx.fill();
+                ctx.restore();
+
+                ctx.textAlign = 'center';
+                ctx.fillStyle = '#F4FAFC';
+                if (f.state !== 'ready') {
+                    ctx.font = `800 ${Math.round(h * 0.08)}px Arial`;
+                    ctx.fillText(f.score, w / 2, h * 0.14);
+                }
+                if (f.state === 'ready' || f.state === 'over') {
+                    ctx.fillStyle = 'rgba(24, 42, 67, 0.72)';
+                    ctx.fillRect(w * 0.12, h * 0.56, w * 0.76, h * 0.16);
+                    ctx.fillStyle = '#F4FAFC';
+                    ctx.font = `700 ${Math.round(Math.min(w * 0.055, 20))}px Arial`;
+                    ctx.fillText(f.state === 'ready' ? '点击屏幕开始' : '游戏结束', w / 2, h * 0.63);
+                    ctx.font = `400 ${Math.round(Math.min(w * 0.04, 15))}px Arial`;
+                    ctx.fillText(f.state === 'ready' ? '点一下往上飞，别碰到柱子' : `本局 ${f.score} 分 · 点击再来一局`, w / 2, h * 0.68);
+                }
+            }
+
+            function updateFlappyUI() {
+                document.getElementById('flappy-score').textContent = flappy.score;
+                document.getElementById('flappy-best').textContent = flappy.best;
+            }
+
+            return { init, nav, swt, preRecharge, doRech, selectPaymentMethod, buyOrig, confirmBuyOrig, closeConfirmOrig, draw, closeDraw, fav, exch, confirmExch, closeConfirmExch, subReg, openReg, openCS, subCS, togPt, det, openFavs, togFavLi, actFav, toLucky, showProductInfo, buyProduct, showItemDetail, addRec, handleFileChange, switchGrid, doSearch, renderSearchHistory, clearSearchHistory, delSearchHist, toggleSearchHist, loginGoogle, loginFacebook, loginEmail, loginPhone, submitEmailLogin, submitPhoneLogin, logout, editSecurityText, openWinNoticeModal, closeWinNoticeModal, openAddressEdit, saveAddress, openBreakoutGame, closeBreakoutGame, breakoutRestart, openSpaceShooterGame, closeSpaceShooterGame, spaceShooterRestart, openGame2048, closeGame2048, game2048Restart, openFlappyGame, closeFlappyGame, flappyRestart, getLocation, openLocationMap, handleLocationClick, openCatDropdown, closeCatDropdown, selectCategoryFromDropdown, toggleCatExpand, openRechargeHistory, openLevelInfo, openPrivacyPolicy, openTermsOfUse, openTroubleSigningIn, openDataSecurity };
         })();
 
         // 页面级固定操作栏对齐（供 load、DOMContentLoaded 与 resize 共用）
